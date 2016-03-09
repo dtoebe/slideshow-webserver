@@ -2,6 +2,7 @@
 
 ### Web Socket Server
 * Send "real-time" data to the chrome app on the status of the processes running in JSON
+* __DONE__
 
 ### Local Socket Server
 * receive communication from the Process watcher bin

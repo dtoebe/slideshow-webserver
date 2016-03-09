@@ -5,10 +5,12 @@ import (
 	"net/http"
 
 	"github.com/dtoebe/slideshow-webserver/paths"
+	"github.com/dtoebe/slideshow-webserver/socket"
 	"github.com/dtoebe/slideshow-webserver/utils"
 	"github.com/dtoebe/slideshow-webserver/writer"
 
 	"github.com/vaughan0/go-ini"
+	"gopkg.in/igm/sockjs-go.v2/sockjs"
 )
 
 func parseSetting() (core, images map[string]string) {
@@ -20,6 +22,7 @@ func parseSetting() (core, images map[string]string) {
 }
 
 func main() {
+	go socket.TestData()
 	core, images := parseSetting()
 	uploadPath := utils.ParsePath(images["upload_path"])
 	fullPath := utils.ParsePath(images["static_path"])
@@ -34,6 +37,8 @@ func main() {
 	http.HandleFunc("/settings", func(w http.ResponseWriter, r *http.Request) {
 		writer.ReceiveSettings(w, r, uploadPath)
 	})
+
+	http.Handle("/sock/", sockjs.NewHandler("/sock", sockjs.DefaultOptions, socket.Server))
 
 	log.Printf("[INF] Server started on port: %s\n", core["web_port"])
 	log.Fatal(http.ListenAndServe(":"+core["web_port"], nil))

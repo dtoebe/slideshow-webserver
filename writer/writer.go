@@ -8,7 +8,7 @@ import (
 	"os"
 	"path"
 
-	"webserver/utils"
+	"github.com/dtoebe/slideshow-webserver/utils"
 )
 
 type structure struct {

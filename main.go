@@ -4,9 +4,9 @@ import (
 	"log"
 	"net/http"
 
-	"webserver/paths"
-	"webserver/utils"
-	"webserver/writer"
+	"github.com/dtoebe/slideshow-webserver/paths"
+	"github.com/dtoebe/slideshow-webserver/utils"
+	"github.com/dtoebe/slideshow-webserver/writer"
 
 	"github.com/vaughan0/go-ini"
 )

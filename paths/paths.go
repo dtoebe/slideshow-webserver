@@ -8,7 +8,7 @@ import (
 	"path"
 	"strings"
 
-	"webserver/utils"
+	"github.com/dtoebe/slideshow-webserver/utils"
 )
 
 //Paths from settings.ini

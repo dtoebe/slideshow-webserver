@@ -7,6 +7,9 @@
 ### Local Socket Server
 * receive communication from the Process watcher bin
 
+### Execute Thumbnail Generator
+* Since the Thumbnail generator is its own executable I need a func to execute it
+
 ### Thumbnail Generator
 * created: https://github.com/dtoebe/SlideShowThumbnailCreator.git
 * __DONE__

@@ -43,7 +43,7 @@ func handleRec(conn net.Conn) {
 	var s Services
 
 	n := bytes.Index(buf, []byte{0})
-	if err := json.Unmarshal(buf[:n-1], &s); err != nil {
+	if err := json.Unmarshal(buf[:n], &s); err != nil {
 		log.Printf("[ERR] (socket Server) Cannot unmarshal JSON: %v\n", err)
 		return
 	}

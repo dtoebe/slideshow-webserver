@@ -22,7 +22,7 @@ func parseSetting() (core, images map[string]string) {
 }
 
 func main() {
-	go socket.TestData()
+	// go socket.TestData()
 	core, images := parseSetting()
 	uploadPath := utils.ParsePath(images["upload_path"])
 	fullPath := utils.ParsePath(images["static_path"])
@@ -39,7 +39,8 @@ func main() {
 	})
 
 	http.Handle("/sock/", sockjs.NewHandler("/sock", sockjs.DefaultOptions, socket.Server))
+	go socket.TCPServer("localhost", core["socket_port"])
 
-	log.Printf("[INF] Server started on port: %s\n", core["web_port"])
+	log.Printf("[INF] Web server started on port: %s\n", core["web_port"])
 	log.Fatal(http.ListenAndServe(":"+core["web_port"], nil))
 }

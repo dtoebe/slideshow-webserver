@@ -6,6 +6,7 @@
 
 ### Local Socket Server
 * receive communication from the Process watcher bin
+* __DONE__
 
 ### Execute Thumbnail Generator
 * Since the Thumbnail generator is its own executable I need a func to execute it
@@ -32,3 +33,13 @@
 
 ### Stettings Reader
 * read the slideshow settings and send it to client in json format
+
+### Comment Code
+* Since I am the only one working on this I haven't taken the time to comment what I have done.. Minus what GoOracle yells at me to do
+
+### Fix Logging
+* Format "[Type of msg] (portion of server) message: err if needed"
+    * _Type of msg_
+        * ERR, INF
+    * _Portion of server_
+        * Socket server, Websocket, Upload...

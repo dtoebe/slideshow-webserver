@@ -1,11 +1,13 @@
 package socket
 
 import (
+	"bytes"
 	"encoding/json"
 	"log"
 	"net"
 )
 
+//TCPServer is a goroitine that listens for process status updates and sends it to the websocket server
 func TCPServer(host, port string) {
 	log.Println("[INF] TCP Socket server started")
 
@@ -15,7 +17,7 @@ func TCPServer(host, port string) {
 		return
 	}
 	defer listen.Close()
-	log.Printf("[INF] Listening on %s:%s...\n", host, port)
+	log.Printf("[INF] Internal socket listening on %s:%s...\n", host, port)
 
 	for {
 		conn, err := listen.Accept()
@@ -23,6 +25,7 @@ func TCPServer(host, port string) {
 			log.Printf("[ERR] Unable to accept incomming message: %v\n", err)
 			continue
 		}
+		defer conn.Close()
 		log.Println("[INF] Message Received")
 
 		go handleRec(conn)
@@ -32,14 +35,24 @@ func TCPServer(host, port string) {
 func handleRec(conn net.Conn) {
 	buf := make([]byte, 1024)
 
-	req, err := conn.Read(buf)
-	decoder := json.NewDecoder()
-
-	var s Services
-	if err = decoder.Decode(&s); err != nil {
-		log.Printf("[ERR] Unable to decode json: %v\n", err)
+	if _, err := conn.Read(buf); err != nil {
+		log.Printf("[ERR] (Socket Server) Cannot read from connection: %v\n", err)
 		return
 	}
+
+	var s Services
+
+	n := bytes.Index(buf, []byte{0})
+	if err := json.Unmarshal(buf[:n-1], &s); err != nil {
+		log.Printf("[ERR] (socket Server) Cannot unmarshal JSON: %v\n", err)
+		return
+	}
+
+	if _, err := conn.Write([]byte("OK")); err != nil {
+		log.Printf("[ERR] (Socket Server) Reply could not be sent: %v\n", err)
+		return
+	}
+	conn.Close()
 
 	message <- s.RecData()
 }
